@@ -1,9 +1,9 @@
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", async function () {
 	chrome.tabs.executeScript(
 	  {
 		code: "window.getSelection().toString();",
 	  },
-	  async function (result) { // Add 'async' here
+	  async function (result) { 
 		let highlightedText = result[0];
 		document.getElementById("highlighted-text").innerText = highlightedText;
 		await getDefinition(highlightedText); // Call the 'getDefinition' function here
@@ -13,20 +13,21 @@ document.addEventListener("DOMContentLoaded", function () {
   
 async function getDefinition(text) { // The parameter should be 'text' instead of 'highlightedText'
 	const apiKey = "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";
-	const prompt = `Give me a dictionary definition of: ${text}`;
+	const prompt = `Remove any biases and slanted language from the article: ${text}`;
   
-	const response = await fetch("https://api.openai.com/v1/engines/davinci-codex/completions", {
+	const response = await fetch("https://api.openai.com/v1/completions", {
 	  method: "POST",
 	  headers: {
 		"Content-Type": "application/json",
 		"Authorization": `Bearer ${apiKey}`
 	  },
 	  body: JSON.stringify({
+		model: "text-davinci-003",
 		prompt: prompt,
-		max_tokens: 50,
+		max_tokens: 250,
 		n: 1,
 		stop: null,
-		temperature: 0.7,
+		temperature: 0.3,
 	  }),
 	});
   
