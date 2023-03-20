@@ -1,15 +1,21 @@
 {
 	"manifest_version": 2,
-	"name": "Text Highlighter",
+	"name": "News Article Text Extractor",
 	"version": "1.0",
-	"description": "Capture highlighted text and display it in the extension popup",
+	"description": "Extracts and displays the main text content of an online news article",
+	"permissions": ["activeTab", "https://*/*", "http://*/*"],
 	"browser_action": {
 	  "default_popup": "popup.html",
 	  "default_icon": "logo.png"
 	},
-	"permissions": ["activeTab", "storage"],
-	"content_security_policy": "script-src 'self' https://ajax.googleapis.com; object-src 'self'",
-	"icons": {
-	  "48": "logo.png"
-	}
+	"background": {
+	  "scripts": ["background.js"]
+	},
+	"content_scripts": [
+	  {
+		"matches": ["https://*/*", "http://*/*"],
+		"js": ["content.js"]
+	  }
+	]
   }
+  

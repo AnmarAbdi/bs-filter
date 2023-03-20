@@ -1,38 +1,28 @@
-document.addEventListener("DOMContentLoaded", async function () {
-	chrome.tabs.executeScript(
-	  {
-		code: "window.getSelection().toString();",
-	  },
-	  async function (result) { 
-		let highlightedText = result[0];
-		document.getElementById("highlighted-text").innerText = highlightedText;
-		await getDefinition(highlightedText); // Call the 'getDefinition' function here
-	  }
-	);
-  });
-  
-async function getDefinition(text) { // The parameter should be 'text' instead of 'highlightedText'
-	const apiKey = "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";
-	const prompt = `Remove any biases and slanted language from the article: ${text}`;
-  
-	const response = await fetch("https://api.openai.com/v1/completions", {
+async function fetchArticleText(html) {
+	const response = await fetch("http://localhost:5000/parse-html", {
 	  method: "POST",
 	  headers: {
-		"Content-Type": "application/json",
-		"Authorization": `Bearer ${apiKey}`
+		"Content-Type": "text/plain",
 	  },
-	  body: JSON.stringify({
-		model: "text-davinci-003",
-		prompt: prompt,
-		max_tokens: 250,
-		n: 1,
-		stop: null,
-		temperature: 0.3,
-	  }),
+	  body: html,
 	});
   
 	const data = await response.json();
-	const definition = data.choices[0].text.trim();
-	document.getElementById("definition").innerText = definition;
-}
+	return data.article_text;
+  }
+  
+document.addEventListener("DOMContentLoaded", function () {
+	chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+	  chrome.tabs.sendMessage(tabs[0].id, { action: "fetchArticle" }, async function (response) {
+		if (response.error) {
+		  document.getElementById("article-text").innerText = "Error: " + response.error;
+		  return;
+		}
+  
+		const html = response.html;
+		const articleText = await fetchArticleText(html);
+		document.getElementById("article-text").innerText = articleText;
+	  });
+	});
+  });
   
