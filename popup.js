@@ -6,14 +6,14 @@ document.addEventListener("DOMContentLoaded", async function () {
 	  async function (result) { 
 		let highlightedText = result[0];
 		document.getElementById("highlighted-text").innerText = highlightedText;
-		await getDefinition(highlightedText); // Call the 'getDefinition' function here
+		await getDefinition(highlightedText);
 	  }
 	);
   });
   
-async function getDefinition(text) { // The parameter should be 'text' instead of 'highlightedText'
+async function getDefinition(text) { 
 	const apiKey = "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";
-	const prompt = `Remove any biases and slanted language from the article: ${text}`;
+	const prompt = `Remove any and only biases and slanted language from the following article. Keep the exact article structure, and make sure to keep all context needed for the reader. Make sure to keep all quotes unchanged in the article: ${text}`;
   
 	const response = await fetch("https://api.openai.com/v1/completions", {
 	  method: "POST",
@@ -24,7 +24,7 @@ async function getDefinition(text) { // The parameter should be 'text' instead o
 	  body: JSON.stringify({
 		model: "text-davinci-003",
 		prompt: prompt,
-		max_tokens: 250,
+		max_tokens: 1500,
 		n: 1,
 		stop: null,
 		temperature: 0.3,

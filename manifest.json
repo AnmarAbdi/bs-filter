@@ -1,8 +1,8 @@
 {
 	"manifest_version": 2,
-	"name": "Text Highlighter",
+	"name": "BS Filter",
 	"version": "1.0",
-	"description": "Capture highlighted text and display it in the extension popup",
+	"description": "Remove Bias and Slants from news articles",
 	"browser_action": {
 	  "default_popup": "popup.html",
 	  "default_icon": "logo.png"
