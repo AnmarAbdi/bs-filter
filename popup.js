@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 });
 
 async function getDefinition(text) {
-    const response = await fetch("https://bsproxy.herokuapp.com/", {
+    const response = await fetch("https://bsproxy.herokuapp.com/get-definition", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
