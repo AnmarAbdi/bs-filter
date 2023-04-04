@@ -1,15 +1,18 @@
 {
-	"manifest_version": 2,
+	"manifest_version": 3,
 	"name": "BS Filter",
 	"version": "1.0",
+	"host_permissions": ["https://bsproxy.herokuapp.com/"],
 	"description": "Remove Bias and Slants from news articles",
-	"browser_action": {
-	  "default_popup": "popup.html",
-	  "default_icon": "logo.png"
-	},
 	"permissions": ["activeTab", "storage"],
-	"content_security_policy": "script-src 'self' https://ajax.googleapis.com; object-src 'self'",
 	"icons": {
 	  "48": "logo.png"
+	},
+	"action": {
+	  "default_popup": "popup.html",
+	  "default_icon": {
+		"48": "logo.png"
+	  }
 	}
-  }
+}
+  
