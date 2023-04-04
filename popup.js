@@ -1,4 +1,9 @@
 document.addEventListener("DOMContentLoaded", async function () {
+	const getDefinitionButton = document.getElementById("get-definition-button");
+	getDefinitionButton.addEventListener("click", handleButtonClick);
+  });
+  
+  async function handleButtonClick() {
 	chrome.tabs.query({ active: true, currentWindow: true }, async (tabs) => {
 	  const tabId = tabs[0].id;
   
@@ -14,7 +19,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 		}
 	  );
 	});
-  });
+  }
   
   async function getDefinition(text) {
 	const response = await fetch("https://bsproxy.herokuapp.com/get-definition", {
