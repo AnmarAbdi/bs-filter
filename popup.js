@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 	chrome.tabs.query({ active: true, currentWindow: true }, async (tabs) => {
 	  const tabId = tabs[0].id;
   
-	  chrome.scripting.executeScript(
+	  chrome.tabs.executeScript(
 		{
 		  target: { tabId: tabId },
 		  function: () => window.getSelection().toString(),
