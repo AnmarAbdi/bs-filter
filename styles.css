@@ -1,0 +1,15 @@
+body {
+    width: 800px;
+    height: 600px;
+    text-align: center;
+}
+
+#highlighted-text {
+    margin-left: 5%;
+    margin-right: 5%;
+}
+
+#definition {
+    margin-left: 5%;
+    margin-right: 5%;
+}
