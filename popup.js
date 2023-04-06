@@ -7,19 +7,22 @@ document.addEventListener("DOMContentLoaded", async function () {
 	chrome.tabs.query({ active: true, currentWindow: true }, async (tabs) => {
 	  const tabId = tabs[0].id;
   
-	  chrome.tabs.executeScript(
-		tabId,
+	  chrome.scripting.executeScript(
 		{
-		  code: "window.getSelection().toString();",
+		  target: { tabId: tabId },
+		  function: function() {
+			return window.getSelection().toString();
+		  },
 		},
 		async (result) => {
-		  let highlightedText = result[0];
+		  let highlightedText = result[0].result;
 		  document.getElementById("highlighted-text").innerText = highlightedText;
 		  await getDefinition(highlightedText);
 		}
 	  );
 	});
   }
+  
   
   async function getDefinition(text) {
 	const response = await fetch("https://bsproxy.herokuapp.com/get-definition", {

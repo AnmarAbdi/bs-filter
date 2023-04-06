@@ -1,17 +1,20 @@
 {
-	"manifest_version": 2,
+	"manifest_version": 3,
 	"name": "BS Filter",
 	"version": "1.0",
-	"description": "Remove Bias and Slants from news articles",
-	"permissions": ["activeTab", "storage", "https://bsproxy.herokuapp.com/"],
+	"description": "Removes biases and slants from news articles using AI. This extension is a proof of concept and is not meant to be used as a replacement for a news aggregator.",
+	"permissions": ["activeTab", "storage", "scripting"],
+	"host_permissions": ["https://bsproxy.herokuapp.com/"],
 	"icons": {
-	  "48": "logo.png"
+	  "48": "distressedmonkey.jpg"
 	},
-	"browser_action": {
-	  "default_popup": "popup.html",
-	  "default_icon": {
-		"48": "logo.png"
-	  }
+	"action":{
+		"default_popup": "popup.html",
+		"default_icon": {
+			"16": "distressedmonkey.jpg",
+			"24": "distressedmonkey.jpg",
+			"32": "distressedmonkey.jpg"
+		}
 	}
   }
   
