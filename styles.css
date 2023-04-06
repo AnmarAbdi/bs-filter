@@ -1,15 +1,111 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
 body {
     width: 800px;
-    height: 600px;
+    height: 300px;
     text-align: center;
 }
 
 #highlighted-text {
     margin-left: 5%;
     margin-right: 5%;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 300;
 }
 
 #definition {
     margin-left: 5%;
     margin-right: 5%;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 300;
+    padding: 0%;
+}
+
+.textclassifiers {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 400;
+    margin-block: 0%;
+    margin-top: 1%;
+    margin-bottom: 1%;
+}
+
+.collapsible {
+    outline: none;
+    cursor: pointer;
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 1%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    background-color: rgba(134 134 134); 
+    color: #000000;
+    border: none; 
+    border-radius: 5px;
+    flex-grow: 1;
+}
+
+.collapsible:after {
+    content: '\02795'; /* Unicode (+) */
+    color: white;
+    float: right;
+    margin-left: 5px;
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+  }
+
+.active:after {
+    content: "\2796"; /* Unicode (-) */
+}
+
+.collapsible:hover {
+    background-color: rgb(163, 163, 163); 
+    cursor: pointer; 
+}
+
+#get-definition-button {
+    background-color: rgba(134 134 134); 
+    color: #fff;
+    border: none; 
+    flex-grow: 1; 
+    font-size: 15px; 
+    cursor: pointer; 
+    transition: 0.3s;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 400;
+    margin-bottom: 1%;
+}
+
+#get-definition-button:hover {
+    background-color: rgb(49, 49, 49); 
+    
+    color: #ffffff; 
+    border-color: #081F2D; 
+    transition: 0.3s; 
+}
+
+.content {
+    margin-top: 1%;
+    margin-bottom: 1%;
+}
+
+.warning {
+    font-size: 8px;
+}
+
+.footer {
+    margin-top: 5%;
+}
+
+.footnote {
+    font-size: 10px;
+    text-decoration: underline;
 }
