@@ -2,6 +2,7 @@
 	"manifest_version": 2,
 	"name": "News Article Text Extractor",
 	"version": "1.0",
+<<<<<<< Updated upstream
 	"description": "Extracts and displays the main text content of an online news article",
 	"permissions": ["activeTab", "https://*/*", "http://*/*"],
 	"browser_action": {
@@ -18,4 +19,35 @@
 	  }
 	]
   }
+=======
+	"description": "Removes biases and slants from news articles using AI.",
+	"permissions": ["activeTab", "scripting", "sidePanel"],
+	"host_permissions": ["<all_urls>"],
+	"icons": {
+	  "48": "distressedmonkey.png"
+	},
+	"action":{
+		"default_title": "Click to open panel",
+		"default_icon": 
+		{
+			"16": "distressedmonkey.png",
+			"24": "distressedmonkey.png",
+			"32": "distressedmonkey.png"
+		}
+	},
+	"background": {
+		"service_worker": "background.js"
+	},
+	"side_panel": {
+		"default_path": "sidepanel.html",
+		"openPanelOnActionClick": true
+	},
+	"web_accessible_resources": [
+		{
+		  "resources": ["sidepanel.html", "sidepanel.js"],
+		  "matches": ["<all_urls>"]
+		}
+	  ]
+}
+>>>>>>> Stashed changes
   
