@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 async function handleButtonClick() {
   chrome.tabs.query({ active: true, currentWindow: true }, async (tabs) => {
     const tabId = tabs[0].id;
-
+    console.log(tabId)
     chrome.scripting.executeScript(
       {
         target: { tabId: tabId },
@@ -15,7 +15,9 @@ async function handleButtonClick() {
         },
       },
       async (result) => {
+        console.log(result)
         let highlightedText = result[0].result;
+        console.log(highlightedText); // // // // // // // //
         const chunkSize = 350; // Set your desired chunk size
 
         const definitionsElement = document.getElementById("definition");

@@ -3,18 +3,13 @@
 	"manifest_version": 3,
 	"version": "1.0",
 	"description": "Removes biases and slants from news articles using AI.",
-	"permissions": ["activeTab", "scripting"],
+	"permissions": ["activeTab", "scripting", "sidePanel"],
 	"host_permissions": ["https://bsproxy.herokuapp.com/"],
 	"icons": {
 	  "48": "distressedmonkey.png"
 	},
-	"action":{
-		"default_popup": "popup.html",
-		"default_icon": {
-			"16": "distressedmonkey.png",
-			"24": "distressedmonkey.png",
-			"32": "distressedmonkey.png"
-		}
+	"side_panel": {
+		"default_path": "sidepanel.html"
 	}
 }
   
