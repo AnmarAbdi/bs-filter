@@ -3,21 +3,15 @@ document.addEventListener("DOMContentLoaded", async function () {
   getDefinitionButton.addEventListener("click", handleButtonClick);
 });
 
+// Get highlighted text function
 async function handleButtonClick() {
   chrome.tabs.query({ active: true, currentWindow: true }, async (tabs) => {
     const tabId = tabs[0].id;
-    console.log(tabId)
-    chrome.scripting.executeScript(
-      {
-        target: { tabId: tabId },
-        function: function () {
-          return window.getSelection().toString();
-        },
-      },
-      async (result) => {
-        console.log(result)
-        let highlightedText = result[0].result;
-        console.log(highlightedText); // // // // // // // //
+    console.log('Preparing to send message to tab:', tabId);
+      console.log('Sending message to tab:', tabId);
+      chrome.tabs.sendMessage(tabId, {method: 'getSelection'}, async (response) => {
+        console.log("Response::", response)
+        let highlightedText = response.body;
         const chunkSize = 350; // Set your desired chunk size
 
         const definitionsElement = document.getElementById("definition");
@@ -58,8 +52,7 @@ async function handleButtonClick() {
             definitionsElement.appendChild(newDefinitionDiv);
           }
         }
-      }
-    );
+      });
   });
 }
 
@@ -76,21 +69,3 @@ async function getDefinition(text) {
   const definition = data.definition;
   return definition;
 }
-
-/* 
-		+====- For a collapsable button -====+
-  var coll = document.getElementsByClassName("collapsible");
-  var i;
-  
-  for (i = 0; i < coll.length; i++) {
-	coll[i].addEventListener("click", function() {
-	  this.classList.toggle("active");
-	  var content = this.nextElementSibling;
-	  if (content.style.display === "none") {
-		content.style.display = "block";
-	  } else {
-		content.style.display = "none";
-	  }
-	});
-  }
-  */

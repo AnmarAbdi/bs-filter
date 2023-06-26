@@ -10,6 +10,18 @@
 	},
 	"side_panel": {
 		"default_path": "sidepanel.html"
-	}
+	},
+	"background": {
+		"service_worker": "content-script.js"
+	},  
+	"content_scripts": [
+		{
+		  "matches": ["<all_urls>"],
+		  "js": ["content-script.js"]
+		}
+	], /// just added this havent tested yet, try out examples from github
+	"content_security_policy": {
+        "extension_pages": "script-src 'self'; object-src 'self'"
+    }	  
 }
   
