@@ -1,22 +1,10 @@
-console.log("CONT SCRIPT")
-function getSelectionHTML() {
-    console.log("contscriptrunningggg")
-    var userSelection;
-    if (document.getSelection) {
-        userSelection = document.getSelection();
-    } else if (document.selection) {    // Old IE
-      userSelection = document.selection.createRange();
-    }
-    console.log("first check:", userSelection)
-    return userSelection ? userSelection.toString() : '';
-}
-  
-  chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
-    console.log("Message recieved: ", request)
-    if (request.method == 'getSelection') {
-      var selection = getSelectionHTML();
-      console.log("Slection: ", selection)
-      sendResponse({body: selection});
-    }
-  });
-  
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+  if (request.message === 'fetch_url') {
+    chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+      let url = tabs[0].url;
+      console.log('URL2:', url);
+      sendResponse({url: url});
+    });
+    return true;  // To enable async sendResponse
+  }
+});

@@ -3,69 +3,71 @@ document.addEventListener("DOMContentLoaded", async function () {
   getDefinitionButton.addEventListener("click", handleButtonClick);
 });
 
-// Get highlighted text function
 async function handleButtonClick() {
-  chrome.tabs.query({ active: true, currentWindow: true }, async (tabs) => {
-    const tabId = tabs[0].id;
-    console.log('Preparing to send message to tab:', tabId);
-      console.log('Sending message to tab:', tabId);
-      chrome.tabs.sendMessage(tabId, {method: 'getSelection'}, async (response) => {
-        console.log("Response::", response)
-        let highlightedText = response.body;
-        const chunkSize = 350; // Set your desired chunk size
+  chrome.tabs.query({ active: true, currentWindow: true }, async function(tabs) {
+    let url = tabs[0].url;
+    console.log("You are here: " + url);
+    const sessionId = await getSessionId();
+    await sendURL(url, sessionId);
+});
 
-        const definitionsElement = document.getElementById("definition");
+  
+  // chrome.tabs.query({ active: true, currentWindow: true }, async (tabs) => {
+  //   const url = tabs[0].url;
+  //   console.log('Preparing to send URL to server:', url);
 
-        if (highlightedText.length > chunkSize) {
-          const sentences = highlightedText.match(/[^.!?]+[.!?]+/g) || [
-            highlightedText,
-          ];
-          let chunks = [];
-          let currentChunk = "";
-
-          for (const sentence of sentences) {
-            if (currentChunk.length + sentence.length <= chunkSize) {
-              currentChunk += sentence;
-            } else {
-              chunks.push(currentChunk);
-              currentChunk = sentence;
-            }
-          }
-
-          if (currentChunk) {
-            chunks.push(currentChunk);
-          }
-
-          for (const chunk of chunks) {
-            const definition = await getDefinition(chunk);
-            if (definition) {
-              const newDefinitionDiv = document.createElement("div");
-              newDefinitionDiv.innerText = definition;
-              definitionsElement.appendChild(newDefinitionDiv);
-            }
-          }
-        } else {
-          const definition = await getDefinition(highlightedText);
-          if (definition) {
-            const newDefinitionDiv = document.createElement("div");
-            newDefinitionDiv.innerText = definition;
-            definitionsElement.appendChild(newDefinitionDiv);
-          }
-        }
-      });
-  });
+  //   const sessionId = await getSessionId();
+  //   await sendURL(url, sessionId);
+  // });
 }
 
-async function getDefinition(text) {
-  const response = await fetch("https://bsproxy.herokuapp.com/get-definition", {
+async function sendURL(url, sessionId) {
+  const response = await fetch("https://bsproxy.herokuapp.com/send-url", { // replace with your server URL
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ text }),
+    body: JSON.stringify({ url, session_id: sessionId }),
+    credentials: 'include'  // Include cookies with the request
   });
 
-  const data = await response.json();
-  const definition = data.definition;
-  return definition;
+  if (response.ok) {
+    console.log('URL sent successfully');
+  } else {
+    console.error('Failed to send URL:', await response.text());
+  }
+}
+
+// Generate a unique ID for this extension
+async function getSessionId() {
+  let sessionId = await new Promise((resolve, reject) => {
+    chrome.storage.local.get(['session_id'], function(result) {
+      if (chrome.runtime.lastError) {
+        return reject(chrome.runtime.lastError);
+      }
+      resolve(result.session_id);
+    });
+  });
+
+  if (!sessionId) {
+    sessionId = generateUUID();
+    await new Promise((resolve, reject) => {
+      chrome.storage.local.set({ session_id: sessionId }, function() {
+        if (chrome.runtime.lastError) {
+          return reject(chrome.runtime.lastError);
+        }
+        resolve();
+      });
+    });
+  }
+
+  return sessionId;
+}
+
+// Function to generate a unique UUID
+function generateUUID() {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    var r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
+    return v.toString(16);
+  });
 }
