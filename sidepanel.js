@@ -10,18 +10,11 @@ async function handleButtonClick() {
     const sessionId = await getSessionId();
     await sendURL(url, sessionId);
 });
-
-  
-  // chrome.tabs.query({ active: true, currentWindow: true }, async (tabs) => {
-  //   const url = tabs[0].url;
-  //   console.log('Preparing to send URL to server:', url);
-
-  //   const sessionId = await getSessionId();
-  //   await sendURL(url, sessionId);
-  // });
 }
 
 async function sendURL(url, sessionId) {
+  console.log("URL to send:", url);  // Log the URL being sent
+  console.log("Session ID:", sessionId);  // Log the Session ID
   const response = await fetch("https://bsproxy.herokuapp.com/send-url", { // replace with your server URL
     method: "POST",
     headers: {
@@ -30,7 +23,7 @@ async function sendURL(url, sessionId) {
     body: JSON.stringify({ url, session_id: sessionId }),
     credentials: 'include'  // Include cookies with the request
   });
-
+  console.log(response.status)
   if (response.ok) {
     console.log('URL sent successfully');
   } else {
