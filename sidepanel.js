@@ -9,6 +9,8 @@ async function handleButtonClick() {
     console.log("You are here: " + url);
     const sessionId = await getSessionId();
     await sendURL(url, sessionId);
+    
+    checkStatus(sessionId);
 });
 }
 
@@ -28,6 +30,32 @@ async function sendURL(url, sessionId) {
     console.log('URL sent successfully');
   } else {
     console.error('Failed to send URL:', await response.text());
+  }
+}
+
+async function checkStatus(sessionId) {
+  const response = await fetch("https://bsproxy.herokuapp.com/check-status", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ session_id: sessionId }),
+  });
+
+  if (response.ok) {
+    const data = await response.json();
+    if (data.status === 'done') {
+      // Display the processed text
+      console.log('Processed text:', data.article_body);
+    } else if (data.status === 'processing') {
+      // Wait for a few seconds and then check the status again
+      setTimeout(() => checkStatus(sessionId), 5000);
+    } else if (data.status === 'error') {
+      // Handle the error
+      console.error('An error occurred while processing the text.');
+    }
+  } else {
+    console.error('Failed to check status:', await response.text());
   }
 }
 
